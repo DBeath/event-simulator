@@ -1,19 +1,37 @@
 Simulation:
 	Calendar calendar
-	QueueManager queue_manager
+	Dictionary<Queue> queue_dict
 	Random rGen
 	
 	public void Start()
 	public void Stop()
+
+Calendar:
+	List<Event> event_list
+	
+	public void addEvent()
+	public void removeEvent()
+	public void getNextEvent()
+	public void sortEvents()
 	
 Event:
 	Entity this_entity
 	Time event_time
 	Simulation this_simulation
 	
+	public abstract void ProcessEvent()
+	
 CallArrive: Event:
+	ProcessEvent()
+		Remove from Calendar
+		Create new CompleteIVR Event
+		
+		
 
 CompleteIVR: Event:
+	ProcessEvent()
+		Remove from Calendar
+		
 
 CompleteServiceCarStereo: Event:
 
@@ -31,8 +49,6 @@ Queue:
 	List<Entity> entity_list
 	List<Server> server_list
 
-QueueManager:
-	List<Queue> queue_list
 
 Server:
 	Int product_type
@@ -42,13 +58,7 @@ Server:
 ServerManager:
 	List<Server>
 
-Calendar:
-	List<Entity> entity_list
-	
-	public void addEvent()
-	public void removeEvent()
-	public void getNextEvent()
-	public void sortEvents()
+
 
 Entity:
 	Int product_type

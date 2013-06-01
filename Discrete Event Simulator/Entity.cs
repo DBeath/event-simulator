@@ -7,7 +7,7 @@ namespace Discrete_Event_Simulator
 {
     public class Entity
     {
-        private int ProductType;
+        public int ProductType;
         public double StartTimeQueue;
         public double ExitTimeQueue;
         public double StartTimeSystem;
