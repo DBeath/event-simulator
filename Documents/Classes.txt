@@ -1,0 +1,89 @@
+Simulation:
+	Calendar calendar
+	QueueManager queue_manager
+	Random rGen
+	
+	public void Start()
+	public void Stop()
+	
+Event:
+	Entity this_entity
+	Time event_time
+	Simulation this_simulation
+	
+CallArrive: Event:
+
+CompleteIVR: Event:
+
+CompleteServiceCarStereo: Event:
+
+CompleteServiceOther: Event:
+
+EventManager:
+
+EventFactory:
+	Enum event_type
+	
+	public Event makeEvent()
+
+Queue:
+	Int product_type
+	List<Entity> entity_list
+	List<Server> server_list
+
+QueueManager:
+	List<Queue> queue_list
+
+Server:
+	Int product_type
+	Entity current_entity
+	Bool available
+	
+ServerManager:
+	List<Server>
+
+Calendar:
+	List<Entity> entity_list
+	
+	public void addEvent()
+	public void removeEvent()
+	public void getNextEvent()
+	public void sortEvents()
+
+Entity:
+	Int product_type
+	Event current_event
+	Time start_time_queue <- CompleteIVR
+	Time exit_time_queue <- CompleteService
+	Time start_time_system <- CallArrive
+	Time exit_time_system <- Complete
+	
+EntityFactory:
+	Enum product_type
+	
+	public Entity makeEntity()
+	
+Random:
+
+Statistics:
+	List<int> TimeInSystem
+	List<int> TimeInQueue
+	
+Output:
+	average system time
+	average queue time
+	average queue length
+	# busy signals
+	# complete stereo
+	# complete other
+	
+	public void grabSystemStats()
+	public void grabEntityStats()
+	public void computeSummaries()
+	public void display()
+
+DatabaseManager:
+
+ConfigManager:
+
+

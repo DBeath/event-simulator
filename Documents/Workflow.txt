@@ -1,0 +1,9 @@
+Make Visual Studio Project
+Make call type Enum
+Make Entity class
+Make event type Enum
+Make the Event class
+Make the Calendar
+Make the QueueManager
+Make the Server class
+Stats class -> hangup count
