@@ -1,7 +1,9 @@
 Simulation:
 	Calendar calendar
+	List<Entity> entity_list
 	Dictionary<Queue> queue_dict
 	Random rGen
+	EventFactory event_factory
 	
 	public void Start()
 	public void Stop()
@@ -9,10 +11,10 @@ Simulation:
 Calendar:
 	List<Event> event_list
 	
-	public void addEvent()
-	public void removeEvent()
-	public void getNextEvent()
-	public void sortEvents()
+	public void AddEvent()
+	public void RemoveEvent()
+	public void GetNextEvent()
+	public void SortEvents()
 	
 Event:
 	Entity this_entity
@@ -21,17 +23,33 @@ Event:
 	
 	public abstract void ProcessEvent(simulation)
 	
+	public void RemoveSelfFromCalendar()
+		simulation.calendar.RemoveEvent(this)
+	
 CallArrive: Event:
+
 	ProcessEvent(simulation)
+		RemoveSelfFromCalendar()
+		Create new CompleteIVR Event
 		
 CompleteIVR: Event:
+
 	ProcessEvent(simulation)
+		RemoveSelfFromCalendar()
+		Put into correct Queue
+		queue.UpdateQueue(this_entity)
 
 CompleteServiceCarStereo: Event:
+
 	ProcessEvent(simulation)
+		RemoveSelfFromCalendar()
+		stereoqueue.UpdateQueue(this_entity)
 
 CompleteServiceOther: Event:
+
 	ProcessEvent(simulation)
+		RemoveSelfFromCalendar()
+		otherqueue.UpdateQueue(this_entity)
 
 EventManager:
 
@@ -45,19 +63,30 @@ Queue:
 	List<Entity> entity_list
 	List<Server> server_list
 
-	UpdateQueue(entity)
+	public void UpdateQueue(entity)
 		foreach server in server_list
-			if server contains 
+			if server contains entity
+				server.RemoveCurrentEntity()
+		
+		foreach server in server_list
+			if server is available
+				server.AddEntity(entity_list.next)
+
 
 Server:
 	Int product_type
 	Entity current_entity
 	Bool available
+	EventFactory event_factory
 	
-ServerManager:
-	List<Server>
-
-
+	public void RemoveCurrentEntity()
+		current_entity.exit_time_system = now
+		available = true
+		
+	public void AddEntity(entity)
+		entity.exit_time_queue = now
+		current_entity = entity
+		event_factory.CreateEvent(CompleteService(product_type))
 
 Entity:
 	Int product_type

@@ -10,6 +10,11 @@ namespace Discrete_Event_Simulator
     {
         public List<Event> EventList;
 
+        public Calendar()
+        {
+            EventList = new List<Event>();    
+        }
+
         public void AddEvent(Event e)
         {
             EventList.Add(e);
@@ -25,7 +30,7 @@ namespace Discrete_Event_Simulator
 
         public void SortEvents()
         {
-            EventList.Sort();
+            EventList.Sort( (e1,e2) => e1.EventTime.CompareTo(e2.EventTime) );
         }
 
         public Event GetNextEvent()
