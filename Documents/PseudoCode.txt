@@ -4,6 +4,8 @@ Simulation:
 	Dictionary<Queue> queue_dict
 	Random rGen
 	EventFactory event_factory
+	Time now
+	
 	
 	public void Start()
 	public void Stop()
@@ -17,76 +19,93 @@ Calendar:
 	public void SortEvents()
 	
 Event:
-	Entity this_entity
+	Entity entity
 	Time event_time
 	Simulation this_simulation
 	
-	public abstract void ProcessEvent(simulation)
+	public abstract void ProcessEvent()
 	
 	public void RemoveSelfFromCalendar()
 		simulation.calendar.RemoveEvent(this)
 	
 CallArrive: Event:
 
-	ProcessEvent(simulation)
+	ProcessEvent()
 		RemoveSelfFromCalendar()
-		Create new CompleteIVR Event
+		entity.start_time_system = simulation.now
+		event_factory.CreateEvent(completeIVR, entity)
 		
 CompleteIVR: Event:
 
-	ProcessEvent(simulation)
+	ProcessEvent()
 		RemoveSelfFromCalendar()
-		Put into correct Queue
-		queue.UpdateQueue(this_entity)
+		simulation.AddEntityToQueue(entity)
+		entity.start_time_queue = simulation.now
 
-CompleteServiceCarStereo: Event:
+CompleteService: Event:
+	int product_type
+	
+	public CompleteService(): base Event(simulation, entity)
+		product_type = entity.product_type
 
-	ProcessEvent(simulation)
+	ProcessEvent()
 		RemoveSelfFromCalendar()
-		stereoqueue.UpdateQueue(this_entity)
-
-CompleteServiceOther: Event:
-
-	ProcessEvent(simulation)
-		RemoveSelfFromCalendar()
-		otherqueue.UpdateQueue(this_entity)
+		queue.CompleteService(this_entity)
 
 EventManager:
 
 EventFactory:
 	Enum event_type
+	Simulation simulation
 	
-	public Event makeEvent()
+	public Event CreateEvent(event_type, entity)
+		switch(event_type)
+			case CallArrive:
+				new CallArrive(simulation, entity)
+				
+			case CompleteIVR:
+				new CompleteIVR(simulation, entity)
+				
+			case CompleteService:
+				new CompleteService(simulation, entity)
 
 Queue:
 	Int product_type
-	List<Entity> entity_list
+	Stack<Entity> entity_stack
 	List<Server> server_list
+	EntityFactory entity_factory
 
-	public void UpdateQueue(entity)
+	public void CompleteService(entity)
 		foreach server in server_list
 			if server contains entity
 				server.RemoveCurrentEntity()
+		UpdateQueue()
+			
+	public void AddEntity(entity)
+		entity_stack.push(entity)
+		UpdateQueue()
 		
-		foreach server in server_list
-			if server is available
-				server.AddEntity(entity_list.next)
-
+	public void UpdateQueue()
+		if entity_stack is not empty
+			foreach server in server_list
+				if server is available
+					new_entity = entity_stack.pull
+					server.AddEntity(new_entity)
+					entity_factory.CreateEvent(CompeteService, new_entity)
 
 Server:
 	Int product_type
 	Entity current_entity
 	Bool available
-	EventFactory event_factory
 	
 	public void RemoveCurrentEntity()
-		current_entity.exit_time_system = now
+		current_entity.exit_time_ = now
 		available = true
 		
 	public void AddEntity(entity)
 		entity.exit_time_queue = now
 		current_entity = entity
-		event_factory.CreateEvent(CompleteService(product_type))
+		
 
 Entity:
 	Int product_type
