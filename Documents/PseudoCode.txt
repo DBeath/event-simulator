@@ -4,24 +4,51 @@ Simulation:
 	Dictionary<Queue> queue_dict
 	Random rGen
 	EventFactory event_factory
-	Time now
+	EntityFactory entity_factory
+	public Time now
 	
+	public Simulation(product_types)
+		entity_factory.CreateEntities(number_of_entities)
+		foreach entity in entity_list
+			event_factory.CreateEvent(CallArrive, entity)
+			
 	
 	public void Start()
-	public void Stop()
+		while calendar.event_list is not empty
+			calendar.RunEvent()
+	
+	public void AddEntityToQueue(entity)
+		queue_dict.product_type_queue.AddEntity(entity)
+		
+	public void CompleteService(entity)
+		queue_dict.product_type_queue.CompleteService(entity)
+		
+	
 
 Calendar:
 	List<Event> event_list
 	
-	public void AddEvent()
-	public void RemoveEvent()
-	public void GetNextEvent()
+	public void AddEvent(event)
+		if event_list does not contain event
+			event_list.Add(event)
+			
+	public void RemoveEvent(event)
+		if event_list contains event
+			event_list.Remove(event)
+	
 	public void SortEvents()
+		event_list.sort()
+		
+	public Void RunEvent()
+		simulation.now = event_list.First(event.event_time)
+		event_list.First(event.ProcessEvent())
 	
 Event:
 	Entity entity
 	Time event_time
 	Simulation this_simulation
+	
+	public Event(simulation, entity, event_time)
 	
 	public abstract void ProcessEvent()
 	
@@ -43,31 +70,34 @@ CompleteIVR: Event:
 		entity.start_time_queue = simulation.now
 
 CompleteService: Event:
-	int product_type
-	
-	public CompleteService(): base Event(simulation, entity)
-		product_type = entity.product_type
 
 	ProcessEvent()
 		RemoveSelfFromCalendar()
-		queue.CompleteService(this_entity)
+		simulation.CompleteService(this_entity)
 
 EventManager:
 
 EventFactory:
 	Enum event_type
 	Simulation simulation
+	Random rGen
 	
 	public Event CreateEvent(event_type, entity)
 		switch(event_type)
 			case CallArrive:
-				new CallArrive(simulation, entity)
+				event_time = rGen.CreateRandom(CallArriveRandomValue)
+				simulation.calendar.AddEvent(
+					new CallArrive(simulation, entity, event_time))
 				
 			case CompleteIVR:
-				new CompleteIVR(simulation, entity)
+				event_time = rGen.CreateRandom(CompleteIVRRandomValue)
+				simulation.calendar.AddEvent(
+					new CompleteIVR(simulation, entity, event_time))
 				
 			case CompleteService:
-				new CompleteService(simulation, entity)
+				event_time = rGen.CreateRandom(CompleteServiceRandomValue)
+				simulation.calendar.AddEvent(
+					new CompleteService(simulation, entity, event_time))
 
 Queue:
 	Int product_type
@@ -109,19 +139,28 @@ Server:
 
 Entity:
 	Int product_type
-	Event current_event
 	Time start_time_queue <- CompleteIVR
 	Time exit_time_queue <- CompleteService
 	Time start_time_system <- CallArrive
 	Time exit_time_system <- Complete
-	
+
 EntityFactory:
-	Enum product_type
+	Enum product_types
+	Random rGen
 	
-	public Entity makeEntity()
+	public List<Entity> CreateEntities(number_of_entities)
+		entity_list = new List<Entity>
+		for (number_of_entities)
+			entity_list.Add(new Entity(various distribution metrics based on rGen here))
+		
+		return entity_list
 	
 Random:
-
+	
+	public int CreateRandom(event_type)
+		"method to create random event_time based on event_type"
+			
+			
 Statistics:
 	List<int> TimeInSystem
 	List<int> TimeInQueue
