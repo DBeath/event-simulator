@@ -103,7 +103,7 @@ Queue:
 	Int product_type
 	Stack<Entity> entity_stack
 	List<Server> server_list
-	EntityFactory entity_factory
+	EventFactory event_factory
 
 	public void CompleteService(entity)
 		foreach server in server_list
@@ -121,7 +121,7 @@ Queue:
 				if server is available
 					new_entity = entity_stack.pull
 					server.AddEntity(new_entity)
-					entity_factory.CreateEvent(CompeteService, new_entity)
+					event_factory.CreateEvent(CompeteService, new_entity)
 
 Server:
 	Int product_type
@@ -129,7 +129,7 @@ Server:
 	Bool available
 	
 	public void RemoveCurrentEntity()
-		current_entity.exit_time_ = now
+		current_entity.exit_time_system = now
 		available = true
 		
 	public void AddEntity(entity)
