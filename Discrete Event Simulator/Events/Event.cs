@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
+using Discrete_Event_Simulator.Entities;
 
 namespace Discrete_Event_Simulator.Events
 {
-    public class Event : IComparable
+    public abstract class Event : IComparable
     {
+        // Comparison helper class.
         private class SortTimeAscendingHelper : IComparer
         {
             public int Compare(object x, object y)
@@ -23,20 +25,31 @@ namespace Discrete_Event_Simulator.Events
             }
         }
 
-        public int EventTime;
+        public double EventTime;
+        public Entity EventEntity;
+        public Simulation EventSimulation;
 
-        public Event()
+        // Constructor
+        protected Event()
         {
-            Random rGen = new Random();
-            EventTime = rGen.Next();
+
         }
 
+        public abstract void ProcessEvent();
+
+        public void RemoveSelfFromCalendar()
+        {
+            EventSimulation.EventCalendar.RemoveEvent(this);
+        }
+
+        // Default comparator
         public int CompareTo(object obj)
         {
             IComparer sortTimeAscending = SortTimeAscending();
             return sortTimeAscending.Compare(this, obj);
         }
 
+        // Comparer
         public static IComparer SortTimeAscending()
         {
             return new SortTimeAscendingHelper();
