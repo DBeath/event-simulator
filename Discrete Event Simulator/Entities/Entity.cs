@@ -9,10 +9,11 @@
         public double ExitTimeSystem { get; set; }
         public int EntityId { get; set; }
 
-        public Entity(Constants.ProductType productType, int id)
+        public Entity(Constants.ProductType productType, int id, double startTime)
         {
             ProductType = productType;
             EntityId = id;
+            StartTimeSystem = startTime;
         }
     }
 }

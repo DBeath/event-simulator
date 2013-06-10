@@ -24,6 +24,19 @@ namespace Discrete_Event_Simulator
             CompleteService, // CompleteService (CarStereo and Other)
         };
 
-        public 
+        // The start and end times of the Simulation in seconds.
+        public const double SimulationStartTime = 0;
+        public const double SimulationEndTime = 10800;
+
+        //-------------------------------------------------------------------------------
+        // Random Value Multipliers
+        //-------------------------------------------------------------------------------
+
+        // The multiplier for calculating the interval between the arrivals of entities.
+        public const double EntityArriveMultiplier = 0.33;
+
+        // The multiplier for calculating the time it takes for a car stereo call
+        // to be serviced.
+        public const double CarStereoServiceMultiplier = 2;
     }
 }
