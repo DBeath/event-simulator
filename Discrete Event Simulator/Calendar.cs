@@ -15,11 +15,13 @@ namespace Discrete_Event_Simulator
             EventList = new List<Event>();    
         }
 
+        // Add an event to the Calendar
         public void AddEvent(Event e)
         {
             EventList.Add(e);
         }
 
+        // Remove an event from the Calendar
         public void RemoveEvent(Event e)
         {
             if (EventList.Contains(e))
@@ -28,11 +30,13 @@ namespace Discrete_Event_Simulator
             }
         }
 
+        // Sort the events in the Calendar by time
         public void SortEvents()
         {
             EventList.Sort( (e1,e2) => e1.EventTime.CompareTo(e2.EventTime) );
         }
 
+        // Get the next event from the Calendar
         public Event GetNextEvent()
         {
             Event e = EventList[0];

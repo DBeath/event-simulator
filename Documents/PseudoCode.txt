@@ -101,7 +101,7 @@ EventFactory:
 
 Queue:
 	Int product_type
-	Stack<Entity> entity_stack
+	Queue<Entity> entity_queue
 	List<Server> server_list
 	EventFactory event_factory
 

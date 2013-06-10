@@ -65,7 +65,7 @@
     <Compile Include="Queues\Queue.cs" />
     <Compile Include="Queues\QueueManager.cs" />
     <Compile Include="Queues\Server.cs" />
-    <Compile Include="Random.cs" />
+    <Compile Include="RandomValue.cs" />
     <Compile Include="Simulation.cs" />
     <Compile Include="Constants.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">

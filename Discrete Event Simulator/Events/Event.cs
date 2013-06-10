@@ -30,9 +30,11 @@ namespace Discrete_Event_Simulator.Events
         public Simulation EventSimulation;
 
         // Constructor
-        protected Event()
+        protected Event(double time, Entity entity, Simulation sim)
         {
-
+            EventTime = time;
+            EventEntity = entity;
+            EventSimulation = sim;
         }
 
         public abstract void ProcessEvent();

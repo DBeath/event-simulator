@@ -2,10 +2,17 @@
 {
     public class Entity
     {
-        public int ProductType;
-        public double StartTimeQueue;
-        public double ExitTimeQueue;
-        public double StartTimeSystem;
-        public double ExitTimeSystem;
+        public Constants.ProductType ProductType { get; set; }
+        public double StartTimeQueue { get; set; }
+        public double ExitTimeQueue { get; set; }
+        public double StartTimeSystem { get; set; }
+        public double ExitTimeSystem { get; set; }
+        public int EntityId { get; set; }
+
+        public Entity(Constants.ProductType productType, int id)
+        {
+            ProductType = productType;
+            EntityId = id;
+        }
     }
 }

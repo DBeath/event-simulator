@@ -6,11 +6,12 @@ using System.Text;
 namespace Discrete_Event_Simulator
 {
     // Constants for each Simulation.
-    public class Constants
+    public static class Constants
     {
         // Each Product that there is a Queue for.
         public enum ProductType 
         {
+            None = 0,
             CarStereo = 1, 
             Other,
         };
@@ -18,9 +19,11 @@ namespace Discrete_Event_Simulator
         // Each type of Event that can occur.
         public enum EventType
         {
-            Arrive=1, // CallArrive
+            Arrive = 1, // CallArrive
             JoinQueue, // CompleteIVR
             CompleteService, // CompleteService (CarStereo and Other)
         };
+
+        public 
     }
 }

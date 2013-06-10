@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Discrete_Event_Simulator.Entities;
 using Discrete_Event_Simulator.Events;
+using Discrete_Event_Simulator.Queues;
 
 namespace Discrete_Event_Simulator
 {
@@ -18,7 +19,7 @@ namespace Discrete_Event_Simulator
 
         public double CurrentTime;
 
-        public Simulation()
+        public Simulation(EventFactory startEventFactory, EntityFactory startEntityFactory)
         {
             
         }
