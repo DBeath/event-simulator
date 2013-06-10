@@ -16,6 +16,8 @@ namespace Discrete_Event_Simulator
             Other,
         };
 
+        public static int[] ProductTypePercent = new[]{0, 50, 50};
+
         // Each type of Event that can occur.
         public enum EventType
         {

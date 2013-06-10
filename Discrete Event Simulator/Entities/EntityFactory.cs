@@ -24,6 +24,7 @@ namespace Discrete_Event_Simulator.Entities
             // Entity number starts at 2, 1 being the End Replication Entity.
             for (int i = 2; i < numEntities + 2; i++)
             {
+                entityStartTime += rGen.Roll(Constants.EntityArriveMultiplier);
                 entityList.Add(new Entity());
             }
         }
