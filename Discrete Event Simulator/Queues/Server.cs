@@ -4,11 +4,11 @@ namespace Discrete_Event_Simulator.Queues
 {
     public class Server
     {
-        public Constants.ProductType ProductType;
+        public SimulationConstants.ProductType ProductType;
         public Entity CurrentEntity;
         public bool Available;
 
-        public Server(Constants.ProductType productType)
+        public Server(SimulationConstants.ProductType productType)
         {
             ProductType = productType;
             Available = true;

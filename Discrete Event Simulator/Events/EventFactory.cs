@@ -13,24 +13,29 @@ namespace Discrete_Event_Simulator.Events
             rGen = startRGen;
         }
 
-        public Event CreateEvent(Constants.EventType eventType, Entity e)
+        public Event CreateEvent(SimulationConstants.EventType eventType, Entity e)
         {
-                switch (eventType)
-                {
-                    case Constants.EventType.Arrive:
+            Event newEvent;
+            switch (eventType)
+            {
+                case SimulationConstants.EventType.Arrive:
+                    newEvent = CreateArrive(e);    
+                    break;
+                case SimulationConstants.EventType.JoinQueue:
+                    newEvent = CreateJoinQueue(e);
+                    break;
+                case SimulationConstants.EventType.CompleteService:
+                    newEvent = CreateCompleteService(e);
+                    break;
 
-                        break;
-                    case Constants.EventType.JoinQueue:
-                        break;
-                    case Constants.EventType.CompleteService:
-                        break;
-
-                }
+            }
+            return newEvent;
         }
 
         public Event CreateArrive(Entity e)
         {
-            
+            double arrivalTime = rGen.Roll(Simulation.SimulationConstants.)
+            Arrive event = new Arrive()
         }
 
         public Event CreateJoinQueue(Entity e)

@@ -6,17 +6,18 @@ using System.Text;
 namespace Discrete_Event_Simulator
 {
     // Constants for each Simulation.
-    public static class Constants
+    public class SimulationConstants
     {
         // Each Product that there is a Queue for.
-        public enum ProductType 
-        {
-            None = 0,
-            CarStereo = 1, 
-            Other,
-        };
+        //public enum ProductType
+        //{
+        //    None = 0,
+        //    CarStereo = 1,
+        //    Other,
+        //};
+        public Dictionary<string, int> ProductType { get; set; }
 
-        public static int[] ProductTypePercent = new[]{0, 50, 50};
+        public int[] ProductTypePercent { get; set; } 
 
         // Each type of Event that can occur.
         public enum EventType
@@ -27,8 +28,8 @@ namespace Discrete_Event_Simulator
         };
 
         // The start and end times of the Simulation in seconds.
-        public const double SimulationStartTime = 0;
-        public const double SimulationEndTime = 10800;
+        public double SimulationStartTime = 0;
+        public double SimulationEndTime = 10800;
 
         //-------------------------------------------------------------------------------
         // Random Value Multipliers
@@ -40,5 +41,13 @@ namespace Discrete_Event_Simulator
         // The multiplier for calculating the time it takes for a car stereo call
         // to be serviced.
         public const double CarStereoServiceMultiplier = 2;
+
+        public SimulationConstants()
+        {
+            ProductType = new Dictionary<string, int> { { "None", 0 } };
+            ProductTypePercent = new[] { 50, 50 };
+            ProductType.Add("Car Stereo", 50);
+            ProductType.Add("Other", 50);
+        }
     }
 }

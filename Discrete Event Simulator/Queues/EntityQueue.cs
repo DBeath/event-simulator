@@ -4,10 +4,10 @@ using Discrete_Event_Simulator.Events;
 
 namespace Discrete_Event_Simulator.Queues
 {
-    public class Queue
+    public class EntityQueue
     {
-        public Constants.ProductType ProductType;
-        public Queue<Entity> EntityQueue;
+        public string ProductType;
+        public Queue<Entity> ThisEntityQueue;
         public List<Server> ServerList;
         public EventFactory EventFactory;
 
@@ -25,7 +25,7 @@ namespace Discrete_Event_Simulator.Queues
 
         public void AddEntity(Entity entity)
         {
-            EntityQueue.Enqueue(entity);
+            ThisEntityQueue.Enqueue(entity);
             UpdateQueue();
         }
 
@@ -33,11 +33,11 @@ namespace Discrete_Event_Simulator.Queues
         {
             foreach (Server server in ServerList)
             {
-                if (server.Available && EntityQueue.Count > 0)
+                if (server.Available && ThisEntityQueue.Count > 0)
                 {
-                    Entity newEntity = EntityQueue.Dequeue();
+                    Entity newEntity = ThisEntityQueue.Dequeue();
                     server.AddEntity(newEntity);
-                    EventFactory.CreateEvent(Constants.EventType.CompleteService, newEntity);
+                    EventFactory.CreateEvent(SimulationConstants.EventType.CompleteService, newEntity);
                 }
             }
         }

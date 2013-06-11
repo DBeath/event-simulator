@@ -62,12 +62,15 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Queues\Queue.cs" />
+    <Compile Include="Queues\EntityQueue.cs" />
     <Compile Include="Queues\QueueManager.cs" />
     <Compile Include="Queues\Server.cs" />
     <Compile Include="RandomValue.cs" />
     <Compile Include="Simulation.cs" />
-    <Compile Include="Constants.cs" />
+    <Compile Include="SimulationConstants.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

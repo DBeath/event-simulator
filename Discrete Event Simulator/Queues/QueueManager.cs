@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace Discrete_Event_Simulator
+namespace Discrete_Event_Simulator.Queues
 {
     public class QueueManager
     {

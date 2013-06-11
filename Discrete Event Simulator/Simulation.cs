@@ -13,15 +13,16 @@ namespace Discrete_Event_Simulator
         public Calendar EventCalendar;
         public QueueManager QueueManager;
         public List<Entity> EntityList;
-        public Dictionary<int, Queue> QueueDict;
+        public Dictionary<int, EntityQueue> QueueDict;
         public EventFactory EventFactory;
         public EntityFactory EntityFactory;
+        public SimulationConstants SimulationConstants;
 
         public double CurrentTime;
 
-        public Simulation(EventFactory startEventFactory, EntityFactory startEntityFactory)
+        public Simulation()
         {
-            
+            EventCalendar = new Calendar();
         }
 
         public void RunAllEvents()

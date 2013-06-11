@@ -1,32 +1,64 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Discrete_Event_Simulator.Entities
 {
     public class EntityFactory
     {
-        public RandomValue rGen;
+        private RandomValue rGen;
+        private Random productTypeRoll;
+        private SimulationConstants simConstants;
 
-        public EntityFactory(RandomValue startRGen)
+        public EntityFactory(RandomValue startRGen, SimulationConstants startSimulationConstants)
         {
             rGen = startRGen;
+            productTypeRoll = new Random();
+            simConstants = startSimulationConstants;
         }
 
+        // Creates and returns a list of entities.
         public List<Entity> CreateEntities(int numEntities)
         {
+            // Create a list with the End Replication Entity.
             List<Entity> entityList = new List<Entity>
                 {
                     // The End Replication Entity.
-                    new Entity(Constants.ProductType.None, 1, Constants.SimulationEndTime)
+                    new Entity("None", 1, simConstants.SimulationEndTime)
                 };
 
-
-            double entityStartTime = Constants.SimulationStartTime;
+            double entityStartTime = simConstants.SimulationStartTime;
             // Entity number starts at 2, 1 being the End Replication Entity.
             for (int i = 2; i < numEntities + 2; i++)
             {
-                entityStartTime += rGen.Roll(Constants.EntityArriveMultiplier);
-                entityList.Add(new Entity());
+                // Roll the value for the start time of the new entity.
+                entityStartTime += rGen.Roll(SimulationConstants.EntityArriveMultiplier);
+                // Create a new entity and add it to the entity list.
+                entityList.Add(new Entity(CalcProductType(), i, entityStartTime));
+            }
+
+            return entityList;
+        }
+
+        // Randomly assigns a Product Type to each entity bases on the percentage chance of that Product.
+        public string CalcProductType()
+        {
+            // Roll a random percentage value.
+            int percent = productTypeRoll.Next(1, 101);
+            // The starting percentage value.
+            int prevpercent = 0;
+
+            // Loop through the ProductType dictionary to find the corresponding product.
+            //
+            // eg. If Product1 = 25% and Product2 = 75%, then a roll between 1 and 25 will assign Product1,
+            // while a roll between 26 and 100 will assign Product2.
+            foreach (KeyValuePair<string, int> product in simConstants.ProductType)
+            {
+                if (percent <= (product.Value + prevpercent) && percent > prevpercent)
+                {
+                    return product.Key;
+                }
+                prevpercent = product.Value;
             }
         }
     }
-}
+}.
