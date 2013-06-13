@@ -10,11 +10,20 @@ namespace Discrete_Event_Simulator.Events
     {
         public Arrive(double time, Entity entity, Simulation sim) : base(time, entity, sim)
         {
+            EventEntity = entity;
+            EventTime = time;
+            EventSimulation = sim;
         }
 
+        // The arrival event of an entity. It will start waiting to join a queue.
         public override void ProcessEvent()
         {
-            throw new NotImplementedException();
+            RemoveSelfFromCalendar();
+            // If the queues are not full, then start waiting. Otherwise nothing more will happen to the entity.
+            if (EventSimulation.CurrentInQueue < EventSimulation.SimConstants.MaxOnHold)
+            {
+                EventSimulation.EventFactory.CreateJoinQueue(EventEntity);
+            }
         }
     }
 }

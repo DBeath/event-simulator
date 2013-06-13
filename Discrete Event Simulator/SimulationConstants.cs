@@ -15,9 +15,14 @@ namespace Discrete_Event_Simulator
         //    CarStereo = 1,
         //    Other,
         //};
-        public Dictionary<string, int> ProductType { get; set; }
-
-        public int[] ProductTypePercent { get; set; } 
+        
+        // The dictionary which has the values for each Product Type.
+        // The key is the name of the product.
+        // The value must be an integer array of size 3, with the zero index being the percentage chance 
+        // that an entity of that type will be created, the one index being the multiplier
+        // for the service time of that product, and the two index being the number of 
+        // servers that the queue has.
+        public Dictionary<string, int[]> ProductType { get; set; }
 
         // Each type of Event that can occur.
         public enum EventType
@@ -31,6 +36,12 @@ namespace Discrete_Event_Simulator
         public double SimulationStartTime = 0;
         public double SimulationEndTime = 10800;
 
+        // The number of Entities to create.
+        public int NumEntities = 10;
+
+        // Maximum number of entities in queues.
+        public int MaxOnHold = 10;
+
         //-------------------------------------------------------------------------------
         // Random Value Multipliers
         //-------------------------------------------------------------------------------
@@ -38,16 +49,22 @@ namespace Discrete_Event_Simulator
         // The multiplier for calculating the interval between the arrivals of entities.
         public const double EntityArriveMultiplier = 0.33;
 
-        // The multiplier for calculating the time it takes for a car stereo call
-        // to be serviced.
-        public const double CarStereoServiceMultiplier = 2;
+        // The multiplier for the time it takes an entity to join a queue after it arrives.
+        public double JoinQueueMultiplier = 2; 
 
+        // The multipliers for the time it takes to finish service in each queue.
+        public double[] ServiceMultiplier = new double[]{ 2, 2};
+
+
+        // Constructor
         public SimulationConstants()
         {
-            ProductType = new Dictionary<string, int> { { "None", 0 } };
-            ProductTypePercent = new[] { 50, 50 };
-            ProductType.Add("Car Stereo", 50);
-            ProductType.Add("Other", 50);
+            
+            ProductType = new Dictionary<string, int[]> { { "None", new[]{0,0,0} } };
+
+            ProductType.Add("Car Stereo", new[]{ 50, 2, 2 });
+            ProductType.Add("Other", new[]{ 50, 2, 2 });
         }
+
     }
 }

@@ -4,11 +4,12 @@ namespace Discrete_Event_Simulator.Queues
 {
     public class Server
     {
-        public SimulationConstants.ProductType ProductType;
+        public string ProductType;
         public Entity CurrentEntity;
         public bool Available;
 
-        public Server(SimulationConstants.ProductType productType)
+        // Constructor
+        public Server(string productType)
         {
             ProductType = productType;
             Available = true;
@@ -18,6 +19,7 @@ namespace Discrete_Event_Simulator.Queues
         public void RemoveCurrentEntity()
         {
             Available = true;
+            CurrentEntity = null;
         }
        
         // Add an Entity to the Server

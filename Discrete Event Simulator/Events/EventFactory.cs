@@ -4,48 +4,75 @@ namespace Discrete_Event_Simulator.Events
 {
     public class EventFactory
     {
-        private Simulation Simulation;
+        private Simulation Sim;
         private RandomValue rGen;
 
+
+        // Constructor
         public EventFactory(Simulation startSim, RandomValue startRGen)
         {
-            Simulation = startSim;
+            Sim = startSim;
             rGen = startRGen;
         }
 
-        public Event CreateEvent(SimulationConstants.EventType eventType, Entity e)
-        {
-            Event newEvent;
-            switch (eventType)
-            {
-                case SimulationConstants.EventType.Arrive:
-                    newEvent = CreateArrive(e);    
-                    break;
-                case SimulationConstants.EventType.JoinQueue:
-                    newEvent = CreateJoinQueue(e);
-                    break;
-                case SimulationConstants.EventType.CompleteService:
-                    newEvent = CreateCompleteService(e);
-                    break;
+        //public Event CreateEvent(SimulationConstants.EventType eventType, Entity e)
+        //{
+        //    Event newEvent;
+        //    switch (eventType)
+        //    {
+        //        case SimulationConstants.EventType.Arrive:
+        //            newEvent = CreateArrive(e);    
+        //            break;
+        //        case SimulationConstants.EventType.JoinQueue:
+        //            newEvent = CreateJoinQueue(e);
+        //            break;
+        //        case SimulationConstants.EventType.CompleteService:
+        //            newEvent = CreateCompleteService(e);
+        //            break;
 
-            }
-            return newEvent;
+        //    }
+        //    return newEvent;
+        //}
+
+        // Create an Arrive Event
+        public void CreateArrive(Entity e)
+        {
+            // Create the new event. The event time is set to the previously generated arrival time
+            // of the entity.
+            Event newEvent = new Arrive(e.StartTimeSystem, e, Sim);
+            // Add the event to the calendar.
+            Sim.EventCalendar.AddEvent(newEvent);
         }
 
-        public Event CreateArrive(Entity e)
+        // Create a Join Queue Event
+        public void CreateJoinQueue(Entity e)
         {
-            double arrivalTime = rGen.Roll(Simulation.SimulationConstants.)
-            Arrive event = new Arrive()
+            // Roll to find the time the Join Queue event will fire.
+            double joinTime = rGen.Roll(Sim.SimConstants.JoinQueueMultiplier) + Sim.CurrentTime;
+            // Create the new event.
+            Event newEvent = new JoinQueue(joinTime, e, Sim);
+            // Add the event to the calendar.
+            Sim.EventCalendar.AddEvent(newEvent);
         }
 
-        public Event CreateJoinQueue(Entity e)
+        // Create a Complete Service Event
+        public void CreateCompleteService(Entity e, double serviceMultiplier)
         {
-            
+            // Set the exit queue time of the entity
+            e.ExitTimeQueue = Sim.CurrentTime;
+            // Roll to find the time that the Complete Service Event will fire.
+            double serviceTime = rGen.Roll(serviceMultiplier) + Sim.CurrentTime;
+            // Create the new event.
+            Event newEvent = new CompleteService(serviceTime, e, Sim);
+            // Add the event to the calendar.
+            Sim.EventCalendar.AddEvent(newEvent);
         }
 
-        public Event CreateCompleteService(Entity e)
+        // Create an End Replication Event
+        public void CreateEndReplication(Entity e)
         {
-            
+            Event newEvent = new EndReplication(Sim.SimConstants.SimulationEndTime, e, Sim);
+            Sim.EventCalendar.AddEvent(newEvent);
         }
     }
 }

@@ -10,11 +10,19 @@ namespace Discrete_Event_Simulator.Events
     {
         public JoinQueue(double time, Entity entity, Simulation sim) : base(time, entity, sim)
         {
+            EventEntity = entity;
+            EventTime = time;
+            EventSimulation = sim;
         }
 
+        // Add the entity to the queue.
         public override void ProcessEvent()
         {
-            throw new NotImplementedException();
+            RemoveSelfFromCalendar();
+            // Set the entity queue start time for the entity to the current time.
+            EventEntity.StartTimeQueue = EventSimulation.CurrentTime;
+            // Add the entity to the queue.
+            EventSimulation.AddEntityToQueue(EventEntity);
         }
     }
 }

@@ -23,20 +23,32 @@ namespace Discrete_Event_Simulator
         {
             InitializeComponent();
 
-            Sim = new Simulation();
             SimConstants = new SimulationConstants();
+            Sim = new Simulation();
+            
             SimRandomValue = new RandomValue();
-            SimEntityFactory = new EntityFactory(SimRandomValue, SimConstants);
+            SimEntityFactory = new EntityFactory(SimRandomValue);
             SimEventFactory = new EventFactory(Sim, SimRandomValue);
 
             Sim.EventFactory = SimEventFactory;
             Sim.EntityFactory = SimEntityFactory;
-            Sim.SimulationConstants = SimConstants;
+            Sim.SimConstants = SimConstants;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Sim.IntitialiseSimulation(SimConstants);
+
+            //foreach (Event thisevent in Sim.EventCalendar.EventList)
+            //{
+            //    listBox1.Items.Add(thisevent.EventEntity.EntityId + ", " + thisevent.EventEntity.StartTimeSystem + "," + thisevent.EventTime);
+            //}
+            Sim.RunAllEvents();
         }
     }
 }

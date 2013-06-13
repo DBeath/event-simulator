@@ -9,16 +9,18 @@ namespace Discrete_Event_Simulator.Entities
         private Random productTypeRoll;
         private SimulationConstants simConstants;
 
-        public EntityFactory(RandomValue startRGen, SimulationConstants startSimulationConstants)
+        public EntityFactory(RandomValue startRGen)
         {
             rGen = startRGen;
             productTypeRoll = new Random();
-            simConstants = startSimulationConstants;
         }
 
         // Creates and returns a list of entities.
-        public List<Entity> CreateEntities(int numEntities)
+        public List<Entity> CreateEntities(SimulationConstants startSimConstants)
         {
+            // Assign the constants for this simulation.
+            simConstants = startSimConstants;
+
             // Create a list with the End Replication Entity.
             List<Entity> entityList = new List<Entity>
                 {
@@ -26,9 +28,10 @@ namespace Discrete_Event_Simulator.Entities
                     new Entity("None", 1, simConstants.SimulationEndTime)
                 };
 
+            // The base entity start time is the start time of the simulation.
             double entityStartTime = simConstants.SimulationStartTime;
-            // Entity number starts at 2, 1 being the End Replication Entity.
-            for (int i = 2; i < numEntities + 2; i++)
+            // Entity id starts at 2, 1 being the End Replication Entity.
+            for (int i = 2; i < simConstants.NumEntities + 2; i++)
             {
                 // Roll the value for the start time of the new entity.
                 entityStartTime += rGen.Roll(SimulationConstants.EntityArriveMultiplier);
@@ -51,14 +54,17 @@ namespace Discrete_Event_Simulator.Entities
             //
             // eg. If Product1 = 25% and Product2 = 75%, then a roll between 1 and 25 will assign Product1,
             // while a roll between 26 and 100 will assign Product2.
-            foreach (KeyValuePair<string, int> product in simConstants.ProductType)
+            string productType = null;
+            foreach (KeyValuePair<string, int[]> product in simConstants.ProductType)
             {
-                if (percent <= (product.Value + prevpercent) && percent > prevpercent)
+                if (percent <= (product.Value[0] + prevpercent) && percent > prevpercent)
                 {
-                    return product.Key;
+                    productType = product.Key;
                 }
-                prevpercent = product.Value;
+                prevpercent = product.Value[0];
             }
+
+            return productType;
         }
     }
-}.
+}
