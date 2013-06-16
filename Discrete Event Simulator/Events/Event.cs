@@ -25,12 +25,13 @@ namespace Discrete_Event_Simulator.Events
             }
         }
 
-        public double EventTime;
+        public int EventTime;
         public Entity EventEntity;
         public Simulation EventSimulation;
+        public int EventStartTime;
 
         // Constructor
-        protected Event(double time, Entity entity, Simulation sim)
+        protected Event(int time, Entity entity, Simulation sim)
         {
             EventTime = time;
             EventEntity = entity;

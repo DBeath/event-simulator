@@ -26,6 +26,7 @@ namespace Discrete_Event_Simulator.Queues
         public void AddEntity(Entity newEntity)
         {
             CurrentEntity = newEntity;
+            Available = false;
         }
     }
 }

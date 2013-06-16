@@ -47,10 +47,11 @@ namespace Discrete_Event_Simulator
         // Remove all events from the list
         public void RemoveAllEvents()
         {
-            foreach (Event e in EventList)
-            {
-                EventList.Remove(e);
-            }
+            //for (int i = 0; i < EventList.Count; i++ )
+            //{
+            //    EventList.RemoveAll();
+            //}
+            EventList.Clear();
         }
     }
 }

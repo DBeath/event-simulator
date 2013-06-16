@@ -5,12 +5,12 @@
         public string ProductType { get; set; }
         public int EntityId { get; set; }
 
-        public double StartTimeQueue { get; set; }
-        public double ExitTimeQueue { get; set; }
-        public double StartTimeSystem { get; set; }
-        public double ExitTimeSystem { get; set; }
+        public int StartTimeQueue { get; set; }
+        public int ExitTimeQueue { get; set; }
+        public int StartTimeSystem { get; set; }
+        public int ExitTimeSystem { get; set; }
 
-        public Entity(string productType, int id, double startTime)
+        public Entity(string productType, int id, int startTime)
         {
             ProductType = productType;
             EntityId = id;

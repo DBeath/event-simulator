@@ -29,7 +29,7 @@ namespace Discrete_Event_Simulator.Entities
                 };
 
             // The base entity start time is the start time of the simulation.
-            double entityStartTime = simConstants.SimulationStartTime;
+            int entityStartTime = simConstants.SimulationStartTime;
             // Entity id starts at 2, 1 being the End Replication Entity.
             for (int i = 2; i < simConstants.NumEntities + 2; i++)
             {

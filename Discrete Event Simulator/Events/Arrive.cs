@@ -8,7 +8,7 @@ namespace Discrete_Event_Simulator.Events
 {
     public class Arrive : Event
     {
-        public Arrive(double time, Entity entity, Simulation sim) : base(time, entity, sim)
+        public Arrive(int time, Entity entity, Simulation sim) : base(time, entity, sim)
         {
             EventEntity = entity;
             EventTime = time;
@@ -24,6 +24,15 @@ namespace Discrete_Event_Simulator.Events
             {
                 EventSimulation.EventFactory.CreateJoinQueue(EventEntity);
             }
+            else
+            {
+                EventSimulation.Stats.IncreaseBusyCount();
+            }
+        }
+
+        public override string ToString()
+        {
+            return "Arrive";
         }
     }
 }

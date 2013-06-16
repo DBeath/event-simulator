@@ -8,7 +8,7 @@ namespace Discrete_Event_Simulator.Events
 {
     public class EndReplication : Event
     {
-        public EndReplication(double time, Entity entity, Simulation sim) : base(time, entity, sim)
+        public EndReplication(int time, Entity entity, Simulation sim) : base(time, entity, sim)
         {
             EventEntity = entity;
             EventTime = time;
@@ -18,6 +18,11 @@ namespace Discrete_Event_Simulator.Events
         public override void ProcessEvent()
         {
             EventSimulation.EndSimulation();
+        }
+
+        public override string ToString()
+        {
+            return "End Replication";
         }
     }
 }

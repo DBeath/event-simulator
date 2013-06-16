@@ -70,6 +70,7 @@
     <Compile Include="RandomValue.cs" />
     <Compile Include="Simulation.cs" />
     <Compile Include="SimulationConstants.cs" />
+    <Compile Include="Statistics.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

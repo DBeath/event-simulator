@@ -8,7 +8,7 @@ namespace Discrete_Event_Simulator.Events
 {
     public class JoinQueue : Event
     {
-        public JoinQueue(double time, Entity entity, Simulation sim) : base(time, entity, sim)
+        public JoinQueue(int time, Entity entity, Simulation sim) : base(time, entity, sim)
         {
             EventEntity = entity;
             EventTime = time;
@@ -23,6 +23,11 @@ namespace Discrete_Event_Simulator.Events
             EventEntity.StartTimeQueue = EventSimulation.CurrentTime;
             // Add the entity to the queue.
             EventSimulation.AddEntityToQueue(EventEntity);
+        }
+
+        public override string ToString()
+        {
+            return "Join Queue " + EventEntity.ProductType;
         }
     }
 }

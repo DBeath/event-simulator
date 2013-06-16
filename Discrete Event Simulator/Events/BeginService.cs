@@ -8,7 +8,7 @@ namespace Discrete_Event_Simulator.Events
 {
     public class BeginService : Event
     {
-        public BeginService(double time, Entity entity, Simulation sim) : base(time, entity, sim)
+        public BeginService(int time, Entity entity, Simulation sim) : base(time, entity, sim)
         {
             EventEntity = entity;
             EventTime = time;

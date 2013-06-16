@@ -17,9 +17,11 @@ namespace Discrete_Event_Simulator
         public EventFactory EventFactory;
         public EntityFactory EntityFactory;
         public SimulationConstants SimConstants;
+        public Display SimDisplay;
+        public Statistics Stats;
 
         public int CurrentInQueue { get; set; }
-        public double CurrentTime;
+        public int CurrentTime;
 
         // Constructor
         public Simulation()
@@ -32,13 +34,23 @@ namespace Discrete_Event_Simulator
         // Intitialise all the parameters for the current simulation.
         public void IntitialiseSimulation(SimulationConstants startSimConstants)
         {
+            
             SimConstants = startSimConstants;
+            SimDisplay.CreateColumns();
+            SimDisplay.ClearDataGridView();
 
             // Create the queues.
             foreach (KeyValuePair<string, int[]> productType in SimConstants.ProductType)
             {
+                if (QueueDict.ContainsKey(productType.Key))
+                {
+                    QueueDict.Remove(productType.Key);
+                }
                 QueueDict.Add(productType.Key, new EntityQueue(productType.Key, EventFactory, productType.Value[1], productType.Value[2]));
             }
+
+            // Intitialise the statistics for this simulation.
+            Stats = new Statistics(this);
 
             //Create the entities.
             EntityList = EntityFactory.CreateEntities(SimConstants);
@@ -57,6 +69,8 @@ namespace Discrete_Event_Simulator
 
             CurrentInQueue = 0;
             CurrentTime = SimConstants.SimulationStartTime;
+
+            
         }
 
         // Run the simulation.
@@ -65,12 +79,21 @@ namespace Discrete_Event_Simulator
             EventCalendar.SortEvents();
             while (EventCalendar.EventList.Count != 0)
             {
-                Event CurrentEvent = EventCalendar.GetNextEvent();
-                CurrentTime = CurrentEvent.EventTime;
-                CurrentEvent.ProcessEvent();
-                EventCalendar.SortEvents();
-                UpdateCurrentInQueue();
+                RunNextEvent();
+                System.Threading.Thread.Sleep(SimConstants.SleepTime);
             }
+        }
+
+        // Runs the next event in the Calendar.
+        public void RunNextEvent()
+        {
+            Event CurrentEvent = EventCalendar.GetNextEvent();
+            CurrentTime = CurrentEvent.EventTime;
+            CurrentEvent.ProcessEvent();
+            EventCalendar.SortEvents();
+            UpdateCurrentInQueue();
+            UpdateCurrentInEachQueue();
+            SimDisplay.RunDisplay();
         }
 
         // Ends the Simulation
@@ -78,7 +101,6 @@ namespace Discrete_Event_Simulator
         {
             EventCalendar.RemoveAllEvents();
             MessageBox.Show("The Simulation is finished");
-            Console.Write(CurrentTime);
         }
 
         // Add the entity to the correct queue.
@@ -96,6 +118,7 @@ namespace Discrete_Event_Simulator
             if (QueueDict.ContainsKey(e.ProductType))
             {
                 QueueDict[e.ProductType].CompleteService(e);
+                Stats.IncreaseCompletion(e.ProductType);
             }
         }
 
@@ -103,6 +126,16 @@ namespace Discrete_Event_Simulator
         public void UpdateCurrentInQueue()
         {
             CurrentInQueue = QueueDict.Sum(entityQueue => entityQueue.Value.GetNumInQueue());
+        }
+
+
+        // Updates the statistics for each queue.
+        public void UpdateCurrentInEachQueue()
+        {
+            foreach (KeyValuePair<string, EntityQueue> keyValuePair in QueueDict)
+            {
+                Stats.UpdateAverageWait(keyValuePair.Value.GetNumInQueue(), keyValuePair.Key);
+            }
         }
     }
 }

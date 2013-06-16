@@ -48,9 +48,10 @@ namespace Discrete_Event_Simulator.Events
         public void CreateJoinQueue(Entity e)
         {
             // Roll to find the time the Join Queue event will fire.
-            double joinTime = rGen.Roll(Sim.SimConstants.JoinQueueMultiplier) + Sim.CurrentTime;
+            int joinTime = rGen.Roll(Sim.SimConstants.JoinQueueMultiplier) + Sim.CurrentTime;
             // Create the new event.
             Event newEvent = new JoinQueue(joinTime, e, Sim);
+            newEvent.EventStartTime = Sim.CurrentTime;
             // Add the event to the calendar.
             Sim.EventCalendar.AddEvent(newEvent);
         }
@@ -61,9 +62,10 @@ namespace Discrete_Event_Simulator.Events
             // Set the exit queue time of the entity
             e.ExitTimeQueue = Sim.CurrentTime;
             // Roll to find the time that the Complete Service Event will fire.
-            double serviceTime = rGen.Roll(serviceMultiplier) + Sim.CurrentTime;
+            int serviceTime = rGen.Roll(serviceMultiplier) + Sim.CurrentTime;
             // Create the new event.
             Event newEvent = new CompleteService(serviceTime, e, Sim);
+            newEvent.EventStartTime = Sim.CurrentTime;
             // Add the event to the calendar.
             Sim.EventCalendar.AddEvent(newEvent);
         }

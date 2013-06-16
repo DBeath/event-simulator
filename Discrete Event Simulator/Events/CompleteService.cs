@@ -8,7 +8,7 @@ namespace Discrete_Event_Simulator.Events
 {
     public class CompleteService : Event
     {
-        public CompleteService(double time, Entity entity, Simulation sim) : base(time, entity, sim)
+        public CompleteService(int time, Entity entity, Simulation sim) : base(time, entity, sim)
         {
             EventEntity = entity;
             EventTime = time;
@@ -21,7 +21,14 @@ namespace Discrete_Event_Simulator.Events
         {
             RemoveSelfFromCalendar();
             // Set the entity exit system time to the current time.
+            EventSimulation.CompleteService(EventEntity);
             EventEntity.ExitTimeSystem = EventSimulation.CurrentTime;
+            
+        }
+
+        public override string ToString()
+        {
+            return "Complete Service " + EventEntity.ProductType;
         }
     }
 }

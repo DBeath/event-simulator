@@ -18,6 +18,7 @@ namespace Discrete_Event_Simulator
         public EntityFactory SimEntityFactory;
         public SimulationConstants SimConstants;
         public RandomValue SimRandomValue;
+        public Display SimDisplay;
 
         public Form1()
         {
@@ -29,10 +30,12 @@ namespace Discrete_Event_Simulator
             SimRandomValue = new RandomValue();
             SimEntityFactory = new EntityFactory(SimRandomValue);
             SimEventFactory = new EventFactory(Sim, SimRandomValue);
+            SimDisplay = new Display(Sim, CalendarGrid, QueueGrid, statsBox, txtCurrentTime);
 
             Sim.EventFactory = SimEventFactory;
             Sim.EntityFactory = SimEntityFactory;
             Sim.SimConstants = SimConstants;
+            Sim.SimDisplay = SimDisplay;
         }
 
         private void Form1_Load(object sender, EventArgs e)
